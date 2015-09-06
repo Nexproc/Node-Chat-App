@@ -10,7 +10,7 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  io.emit('chat message', 'User #' + (++users) + ' has joined the server');
+  io.emit('new user', 'User #' + (++users));
   var username = "User " + users;
   socket.on('chat message', function(msg){
     console.log('message: ' + msg);
