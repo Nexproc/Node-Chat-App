@@ -9,22 +9,22 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  var username = "";
-  if (arguments[0].username) {
-    io.emit('new user', arguments[0].username);
-    username = arguments[0].username;
-  } else {
-    io.emit('new user', arguments);
-    username = "User " + users;
-  }
+  var username = "user";
+
+  // get user info
+  socket.emit('user info request');
+  socket.on('user info response', function (response) {
+    username = response;
+  });
+
   socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
     var message = username + ": " + msg;
     pastMessages.push(msg);
     msg && msg !== "" && io.emit('chat message', message);
   });
+
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    io.emit('disconnect', username + " has disconnected.");
   });
 });
 
