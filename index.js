@@ -8,11 +8,11 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket, options){
+io.on('connection', function(socket){
   var username = "";
-  if (options.username) {
-    io.emit('new user', options.username);
-    username = options.username;
+  if (arguments.username) {
+    io.emit('new user', arguments.username);
+    username = arguments.username;
   } else {
     io.emit('new user', 'User #' + (++users));
     username = "User " + users;
