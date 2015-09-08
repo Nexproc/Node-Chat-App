@@ -9,9 +9,8 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  var username = "user";
-  io.emit('new user', "someone");
-
+  ++users;
+  var username = "hacker";
   // get user info
   socket.emit('user info request');
   socket.on('user info response', function (response) {
@@ -19,13 +18,15 @@ io.on('connection', function(socket){
     io.emit('new user', username);
   });
 
-  socket.on('chat message', function(msg){
+  socket.on('chat message', function(msg) {
+    if (!msg) msg = "";
     var message = username + ": " + msg;
     pastMessages.push(msg);
-    msg && msg !== "" && io.emit('chat message', message);
+    io.emit('chat message', message);
   });
 
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function() {
+    --users;
     io.emit('disconnect', username + " has disconnected.");
   });
 });
