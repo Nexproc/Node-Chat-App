@@ -21,7 +21,7 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg) {
     if (!msg) msg = "";
     var message = username + ": " + msg;
-    pastMessages.push(msg);
+    // pastMessages.push(msg);
     io.emit('chat message', message);
   });
 
