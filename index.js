@@ -10,11 +10,11 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   var username = "";
-  if (arguments.username) {
-    io.emit('new user', arguments.username);
-    username = arguments.username;
+  if (arguments[0].username) {
+    io.emit('new user', arguments[0].username);
+    username = arguments[0].username;
   } else {
-    io.emit('new user', 'User #' + (++users));
+    io.emit('new user', arguments);
     username = "User " + users;
   }
   socket.on('chat message', function(msg){
