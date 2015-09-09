@@ -12,7 +12,8 @@ io.on('connection', function(socket) {
   socket.username = "hacker";
   socket.room = "-1";
   socket.join(socket.room);
-  // get user info
+
+  // get user inf
   socket.emit('user info request');
   socket.on('user info response', function (uname, team_id) {
     socket.username = uname;
@@ -30,14 +31,14 @@ io.on('connection', function(socket) {
   });
 
   socket.on('chat message', function (msg) {
-    if (msg) {
+    if(msg) {
       var message = socket.username + ": " + msg;
       socket.broadcast.to(socket.room).emit('chat message', message);
     }
   });
 
   socket.on('disconnect', function () {
-    socket.broadcast.to(socket.room).emit('disconnect', socket.username + " has disconnected.");
+    // socket.broadcast.to(socket.room).emit('disconnect', socket.username + " has disconnected.");
     socket.leave(socket.room);
   });
 });
