@@ -11,13 +11,13 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   ++users;
   socket.username = "hacker";
-  socket.room = "-1";
+  socket.room = "room0";
   socket.join(socket.room);
   // get user info
   socket.emit('user info request');
   socket.on('user info response', function (uname, team_id) {
     socket.username = uname;
-    if(team_id) socket.room = team_id;
+    if(team_id) socket.room = "room" + team_id;
     socket.join(socket.room);
     socket.broadcast.to(socket.room).emit('new user');
     socket.emit('udpate room', socket.room);
@@ -25,7 +25,7 @@ io.on('connection', function(socket){
 
   socket.on('switch team', function (team_id) {
     socket.leave(socket.room);
-    socket.room = team;
+    socket.room = "room" + team_id;
     socket.join(socket.room);
     socket.emit('udpate room', socket.room);
   });
@@ -33,8 +33,6 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg) {
     if(!msg) return;
     var message = socket.username + ": " + msg;
-    // pastMessages.push(msg);
-    // socket.broadcast.to(socket.room).emit('chat message', message);
     io.sockets.in(socket.room).emit('chat message', message);
   });
 
