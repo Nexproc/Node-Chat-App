@@ -17,7 +17,10 @@ io.on('connection', function(socket) {
   socket.emit('user info request');
   socket.on('user info response', function (uname, team_id) {
     socket.username = uname;
-    if(team_id) socket.room = team_id;
+    if(team_id) {
+      socket.leave(socket.room);
+      socket.room = team_id;
+    }
     socket.join(socket.room);
     socket.broadcast.to(socket.room).emit('new user');
     socket.emit('udpate room', socket.room);
