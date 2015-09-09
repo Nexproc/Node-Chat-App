@@ -20,8 +20,8 @@ io.on('connection', function(socket) {
     if(team_id) {
       socket.leave(socket.room);
       socket.room = team_id;
+      socket.join(socket.room);
     }
-    socket.join(socket.room);
     socket.broadcast.to(socket.room).emit('new user');
     socket.emit('udpate room', socket.room);
   });
