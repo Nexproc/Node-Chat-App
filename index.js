@@ -33,7 +33,8 @@ io.on('connection', function(socket){
     if (!msg) return;
     var message = username + ": " + msg;
     // pastMessages.push(msg);
-    socket.broadcast.to(current_team).emit('chat message', message);
+    // socket.broadcast.to(current_team).emit('chat message', message);
+    io.sockets.in(current_team).emit('chat message', message);
   });
 
   socket.on('disconnect', function() {
