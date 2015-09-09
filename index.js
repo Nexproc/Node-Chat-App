@@ -22,7 +22,7 @@ io.on('connection', function(socket) {
       socket.room = team_id;
       socket.join(socket.room);
     }
-    socket.broadcast.to(socket.room).emit('new user');
+    socket.broadcast.in(socket.room).emit('new user', socket.username);
     socket.emit('udpate room', socket.room);
   });
 
@@ -36,7 +36,7 @@ io.on('connection', function(socket) {
   socket.on('chat message', function (msg) {
     if(msg) {
       var message = socket.username + ": " + msg;
-      socket.broadcast.to(socket.room).emit('chat message', message);
+      socket.broadcast.in(socket.room).emit('chat message', message);
     }
   });
 
