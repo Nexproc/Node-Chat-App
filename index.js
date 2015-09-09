@@ -10,36 +10,37 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   ++users;
-  var username = "hacker";
-  var current_team = "-1";
+  socket.username = "hacker";
+  socket.room = "-1";
+  socket.join(socket.room);
   // get user info
   socket.emit('user info request');
   socket.on('user info response', function (uname, team_id) {
-    username = uname;
-    if (team_id) current_team = team_id;
-    socket.join(current_team);
-    socket.broadcast.to(current_team).emit('new user');
-    socket.emit('udpate room', current_team);
+    socket.username = uname;
+    if(team_id) socket.room = team_id;
+    socket.join(socket.room);
+    socket.broadcast.to(socket.room).emit('new user');
+    socket.emit('udpate room', socket.room);
   });
 
   socket.on('switch team', function (team_id) {
-    socket.leave(current_team);
-    current_team = team;
-    socket.join(current_team);
-    socket.emit('udpate room', current_team);
+    socket.leave(socket.room);
+    socket.room = team;
+    socket.join(socket.room);
+    socket.emit('udpate room', socket.room);
   });
 
   socket.on('chat message', function(msg) {
-    if (!msg) return;
-    var message = username + ": " + msg;
+    if(!msg) return;
+    var message = socket.username + ": " + msg;
     // pastMessages.push(msg);
-    // socket.broadcast.to(current_team).emit('chat message', message);
-    io.sockets.in(current_team).emit('chat message', message);
+    // socket.broadcast.to(socket.room).emit('chat message', message);
+    io.sockets.in(socket.room).emit('chat message', message);
   });
 
   socket.on('disconnect', function() {
     --users;
-    socket.broadcast.to(current_team).emit('disconnect', username + " has disconnected.");
+    socket.broadcast.to(socket.room).emit('disconnect', socket.username + " has disconnected.");
   });
 });
 
