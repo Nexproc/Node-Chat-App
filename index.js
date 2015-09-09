@@ -4,12 +4,11 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 var users = 0;
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
-  ++users;
+io.on('connection', function(socket) {
   socket.username = "hacker";
   socket.room = "-1";
   socket.join(socket.room);
@@ -30,14 +29,14 @@ io.on('connection', function(socket){
     socket.emit('udpate room', socket.room);
   });
 
-  socket.on('chat message', function(msg) {
-    if(!msg) return;
-    var message = socket.username + ": " + msg;
-    io.sockets.in(socket.room).emit('chat message', message);
+  socket.on('chat message', function (msg) {
+    if (msg) {
+      var message = socket.username + ": " + msg;
+      socket.broadcast.to(socket.room).emit('chat message', message);
+    }
   });
 
-  socket.on('disconnect', function() {
-    --users;
+  socket.on('disconnect', function () {
     socket.broadcast.to(socket.room).emit('disconnect', socket.username + " has disconnected.");
   });
 });
