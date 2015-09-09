@@ -16,7 +16,7 @@ io.on('connection', function(socket){
   socket.emit('user info request');
   socket.on('user info response', function (uname, team_id) {
     username = uname;
-    current_team = !!team_id ? team_id : "-1";
+    if (team_id) current_team = team_id;
     socket.join(current_team);
     socket.broadcast.to(current_team).emit('new user');
     socket.emit('udpate room', current_team);
@@ -30,7 +30,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('chat message', function(msg) {
-    if (!msg) msg = "";
+    if (!msg) return;
     var message = username + ": " + msg;
     // pastMessages.push(msg);
     socket.broadcast.to(current_team).emit('chat message', message);
