@@ -38,6 +38,7 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', function () {
     socket.broadcast.to(socket.room).emit('disconnect', socket.username + " has disconnected.");
+    socket.leave(socket.room);
   });
 });
 
