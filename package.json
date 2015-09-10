@@ -1,11 +1,8 @@
 {
   "name": "socket-chat-example",
-  "version": "0.1.4",
+  "version": "0.0.1",
   "description": "my first socket.io app",
   "name": "node-js-getting-started",
-  "engines": {
-    "node": "0.12.7"
-  },
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^1.3.6"
