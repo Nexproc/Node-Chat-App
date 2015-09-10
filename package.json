@@ -4,7 +4,7 @@
   "description": "my first socket.io app",
   "name": "node-js-getting-started",
   "engines": {
-    "node": "0.12.2"
+    "node": "0.12.7"
   },
   "dependencies": {
     "express": "^4.10.2",
