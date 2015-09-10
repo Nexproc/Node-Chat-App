@@ -26,11 +26,11 @@ io.on('connection', function(socket) {
     socket.emit('update room', socket.room);
   });
 
-  socket.on('switch team', function (team_id) {
+  socket.on('switch team', function (teamid, teamName) {
     socket.leave(socket.room);
-    socket.room = team_id;
+    socket.room = teamid;
     socket.join(socket.room);
-    socket.emit('update room', socket.room);
+    socket.emit('update room', socket.room, teamName);
   });
 
   socket.on('chat message', function (msg) {
