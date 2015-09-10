@@ -23,14 +23,14 @@ io.on('connection', function(socket) {
       socket.join(socket.room);
     }
     socket.broadcast.in(socket.room).emit('new user', socket.username);
-    socket.emit('udpate room', socket.room);
+    socket.emit('update room', socket.room);
   });
 
   socket.on('switch team', function (team_id) {
     socket.leave(socket.room);
     socket.room = team_id;
     socket.join(socket.room);
-    socket.emit('udpate room', socket.room);
+    socket.emit('update room', socket.room);
   });
 
   socket.on('chat message', function (msg) {
